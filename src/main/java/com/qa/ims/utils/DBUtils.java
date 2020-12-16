@@ -24,6 +24,7 @@ public class DBUtils {
 
 	private final String DB_PASS;
 
+<<<<<<< Updated upstream
 	private DBUtils(String properties) {
 		Properties dbProps = new Properties();
 		try (InputStream fis = new FileInputStream(properties)) {
@@ -34,6 +35,15 @@ public class DBUtils {
 		this.DB_URL = dbProps.getProperty("db.url", "");
 		this.DB_USER = dbProps.getProperty("db.user", "");
 		this.DB_PASS = dbProps.getProperty("db.password", "");
+=======
+	private final String DB_URL = "jdbc:mysql://34.76.9.108/ims";
+
+	private DBUtils(String username, String password) {
+		this.DB_USER = username;
+		this.DB_PASS = password;
+
+		init();
+>>>>>>> Stashed changes
 	}
 
 	public DBUtils() {
