@@ -2,15 +2,18 @@ package com.qa.ims.persistence.domain;
 
 public class Customer {
 
+	// Initialising fields
 	private Long id;
 	private String firstName;
 	private String surname;
-
+	
+	// Constructor taking in parameters and calling methods to assign given parameters.
 	public Customer(String firstName, String surname) {
 		this.setFirstName(firstName);
 		this.setSurname(surname);
 	}
-
+	
+	//Second constructors which assigns the parameters to the fields by calling the methods. 
 	public Customer(Long id, String firstName, String surname) {
 		this.setId(id);
 		this.setFirstName(firstName);
@@ -43,7 +46,7 @@ public class Customer {
 
 	@Override
 	public String toString() {
-		return "id:" + id + " first name:" + firstName + " surname:" + surname;
+		return "id: " + id + " first name: " + firstName + " surname: " + surname;
 	}
 
 	@Override
