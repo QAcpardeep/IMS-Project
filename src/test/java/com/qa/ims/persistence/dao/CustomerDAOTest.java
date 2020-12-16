@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.qa.ims.persistence.domain.Customer;
@@ -15,9 +16,13 @@ public class CustomerDAOTest {
 
 	private final CustomerDAO DAO = new CustomerDAO();
 
+	@BeforeClass
+	public static void init() {
+		DBUtils.connect("root", "pass");
+	}
+
 	@Before
 	public void setup() {
-		DBUtils.connect("src/test/resources/db.properties");
 		DBUtils.getInstance().init("src/test/resources/sql-schema.sql", "src/test/resources/sql-data.sql");
 	}
 
