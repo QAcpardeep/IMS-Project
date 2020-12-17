@@ -5,16 +5,16 @@ public class Item {
 	//Initialising private fields
 	private Long id;
 	private String name; 
-	private Long value;
+	private Double value;
 	
 	//Constructor taking in parameters and calling methods to assign given parameters.
-	public Item(String name, Long value) {
+	public Item(String name, Double value) {
 		this.setName(name);
 		this.setValue(value);
 	}
 	
 	//Second constructors which assigns the parameters to the fields by calling the methods.
-	public Item(Long id, String name, Long value) {
+	public Item(Long id, String name, Double value) {
 		this.setId(id);
 		this.setName(name);
 		this.setValue(value);
@@ -36,12 +36,12 @@ public class Item {
 		this.name = name;
 	}
 
-	public Long getValue() {
+	public Double getValue() {
 		return value;
 	}
 
-	public void setValue(Long value) {
-		this.value = value;
+	public void setValue(Double value2) {
+		this.value = value2;
 	}
 
 	@Override
