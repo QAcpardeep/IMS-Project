@@ -26,10 +26,16 @@ public class ItemController implements CrudController<Item> {
 		this.utils = utils;
 	}
 	
+	/**
+	 * Reads all customers to the logger
+	 */
 	@Override
 	public List<Item> readAll() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Item> items = itemDAO.readAll();
+		for (Item item : items) {
+			LOGGER.info(item.toString());
+		}
+		return items;
 	}
 	
 	/**
