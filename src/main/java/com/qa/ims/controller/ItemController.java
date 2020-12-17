@@ -54,8 +54,15 @@ public class ItemController implements CrudController<Item> {
 
 	@Override
 	public Item update() {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.info("Please enter the id of the item you would like to update");
+		Long id = utils.getLong();
+		LOGGER.info("Please enter a item name");
+		String name = utils.getString();
+		LOGGER.info("Please enter a the value of the item");
+		Double value = utils.getDouble();
+		Item item = itemDAO.update(new Item(id, name, value));
+		LOGGER.info("Item updated");
+		return item;
 	}
 
 	@Override
