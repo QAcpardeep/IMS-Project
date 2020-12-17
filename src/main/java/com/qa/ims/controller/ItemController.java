@@ -51,7 +51,10 @@ public class ItemController implements CrudController<Item> {
 		LOGGER.info("Item created");
 		return item;
 	}
-
+	
+	/**
+	 * Updates an existing customer by taking in user input
+	 */
 	@Override
 	public Item update() {
 		LOGGER.info("Please enter the id of the item you would like to update");
@@ -64,11 +67,18 @@ public class ItemController implements CrudController<Item> {
 		LOGGER.info("Item updated");
 		return item;
 	}
-
+	
+	/**
+	 * Deletes an existing customer by the id of the item
+	 * 
+	 * @return
+	 */
 	@Override
 	public int delete() {
-		// TODO Auto-generated method stub
-		return 0;
+		LOGGER.info("Please enter the id of the item you would like to delete");
+		Long id = utils.getLong();
+		LOGGER.info("Item deleted");
+		return itemDAO.delete(id);
 	}
 
 }
