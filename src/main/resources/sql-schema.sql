@@ -1,16 +1,3 @@
-<<<<<<< Updated upstream
-drop schema ims;
-
-CREATE SCHEMA IF NOT EXISTS `ims`;
-
-USE `ims` ;
-
-CREATE TABLE IF NOT EXISTS `ims`.`customers` (
-    `id` INT(11) NOT NULL AUTO_INCREMENT,
-    `first_name` VARCHAR(40) DEFAULT NULL,
-    `surname` VARCHAR(40) DEFAULT NULL,
-    PRIMARY KEY (`id`)
-=======
 DROP DATABASE ims;
 
 CREATE DATABASE ims;
@@ -27,7 +14,7 @@ CREATE TABLE IF NOT EXISTS customers (
 CREATE TABLE IF NOT EXISTS items (
 	id INT NOT NULL AUTO_INCREMENT,
 	name VARCHAR(255) NOT NULL,
-	value INTEGER NOT NULL,
+	value DOUBLE(6,2) NOT NULL,
 	PRIMARY KEY(id)
 );
 
@@ -46,5 +33,4 @@ CREATE TABLE IF NOT EXISTS orders_items (
 	PRIMARY KEY(id),
 	FOREIGN KEY (order_id) REFERENCES orders(id),
 	FOREIGN KEY (item_id) REFERENCES items(id)
->>>>>>> Stashed changes
 );
