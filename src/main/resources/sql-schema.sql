@@ -31,11 +31,9 @@ CREATE TABLE IF NOT EXISTS orders_items (
 	order_id INT NOT NULL,
 	item_id INT NOT NULL,
 	PRIMARY KEY(id),
-	FOREIGN KEY (order_id) REFERENCES orders(id),
+	FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
 	FOREIGN KEY (item_id) REFERENCES items(id)
 );
-
-
 
 
 
