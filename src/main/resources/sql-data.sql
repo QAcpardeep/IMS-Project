@@ -14,3 +14,9 @@ VALUES
 ('DAS 6 V2 DUAL ACTION POLISHER', '89.95'),
 ('Bilt Hamber Auto Foam 5L', '17.95'),
 ('Koch Chemie H11.01 Soft Cut', '12.45');
+
+
+INSERT INTO `ims`.`orders` (`customer_id`, `cost`) 
+VALUES 
+('1', '0'),
+('3', '0');

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -23,11 +24,27 @@ public class OrderDAO implements Dao<Order> {
 		Double cost = resultSet.getDouble("cost");
 		return new Order(id, customerId, cost);
 	}
-
+	
+	/**
+	 * Reads all customers from the database
+	 * 
+	 * @return A list of customers
+	 */
 	@Override
 	public List<Order> readAll() {
-		// TODO Auto-generated method stub
-		return null;
+		try (Connection connection = DBUtils.getInstance().getConnection();
+				Statement statement = connection.createStatement();
+				ResultSet resultSet = statement.executeQuery("SELECT * FROM orders");) {
+			List<Order>orders = new ArrayList<>();
+			while (resultSet.next()) {
+				orders.add(modelFromResultSet(resultSet));
+			}
+			return orders;
+		} catch (SQLException e) {
+			LOGGER.debug(e);
+			LOGGER.error(e.getMessage());
+		}
+		return new ArrayList<>();
 	}
 
 	public Order readLatest() {
@@ -59,6 +76,11 @@ public class OrderDAO implements Dao<Order> {
 		
 	}
 	
+	/**
+	 * Creates a customer in the database
+	 * 
+	 * @param customer - takes in a customer object. id will be ignored
+	 */
 	@Override
 	public Order create(Order orders) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
@@ -73,15 +95,24 @@ public class OrderDAO implements Dao<Order> {
 		return null;
 	}
 	
-	
-
-
+	/**
+	 * Updates a customer in the database
+	 * 
+	 * @param customer - takes in a customer object, the id field will be used to
+	 *                 update that customer in the database
+	 * @return
+	 */
 	@Override
 	public Order update(Order t) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	/**
+	 * Deletes a customer in the database
+	 * 
+	 * @param id - id of the customer
+	 */
 	@Override
 	public int delete(long id) {
 		// TODO Auto-generated method stub

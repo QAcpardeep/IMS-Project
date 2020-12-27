@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS items (
 CREATE TABLE IF NOT EXISTS orders (
 	id INT NOT NULL AUTO_INCREMENT,
 	customer_id INT NOT NULL,
-	cost INT NOT NULL,
+	cost DOUBLE(6,2) NOT NULL,
 	PRIMARY KEY(id),
 	FOREIGN KEY (customer_id) REFERENCES customers(id)
 );
@@ -34,3 +34,13 @@ CREATE TABLE IF NOT EXISTS orders_items (
 	FOREIGN KEY (order_id) REFERENCES orders(id),
 	FOREIGN KEY (item_id) REFERENCES items(id)
 );
+
+
+
+
+
+
+
+
+
+
