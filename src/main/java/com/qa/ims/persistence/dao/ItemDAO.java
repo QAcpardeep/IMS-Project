@@ -17,6 +17,14 @@ public class ItemDAO implements Dao<Item>{
 
 	public static final Logger LOGGER = LogManager.getLogger();
 	
+	/**
+	 * Assigns all item values attained from query and created an object of
+	 * item
+	 * 
+	 * @param results - result of the query
+	 * 
+	 * @return A new item object
+	 */
 	@Override
 	public Item modelFromResultSet(ResultSet resultSet) throws SQLException {
 		Long id = resultSet.getLong("id");
@@ -26,9 +34,9 @@ public class ItemDAO implements Dao<Item>{
 	}
 
 	/**
-	 * Reads all customers from the database
+	 * Reads all items from the database
 	 * 
-	 * @return A list of customers
+	 * @return A list of items
 	 */
 	@Override
 	public List<Item> readAll() {
@@ -47,6 +55,11 @@ public class ItemDAO implements Dao<Item>{
 		return new ArrayList<>();
 	}
 	
+	/**
+	 * Reads the latest items from the database
+	 * 
+	 * @return A item
+	 */
 	public Item readLatest() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
@@ -79,6 +92,11 @@ public class ItemDAO implements Dao<Item>{
 		return null;
 	}
 	
+	/**
+	 * Gets the specified item
+	 * 
+	 * @param id - takes in a item id
+	 */
 	public Item readItem(Long id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
@@ -95,8 +113,8 @@ public class ItemDAO implements Dao<Item>{
 	/**
 	 * Updates a item in the database
 	 * 
-	 * @param item - takes in a item object, the id field will be used to
-	 *                 update that customer in the database
+	 * @param item - takes in a item object, the id field will be used to update that customer in the database
+	 * 
 	 * @return
 	 */
 	@Override
@@ -112,7 +130,12 @@ public class ItemDAO implements Dao<Item>{
 		}
 		return null;
 	}
-
+	
+	/**
+	 * Deletes a customer in the database
+	 * 
+	 * @param id - id of the customer
+	 */
 	@Override
 	public int delete(long id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();

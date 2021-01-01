@@ -27,14 +27,21 @@ public class Orders_ItemsController {
 	 * Adds an item to an order. 
 	 */
 	public Orders_Items add(Long orderId) {
-		LOGGER.info("what is the item id");
+		LOGGER.info("what is the item ID?");
 		Long itemId = utils.getLong();
-		LOGGER.info("adding items in the order");
-		Orders_Items orders_items = orders_itemsDAO.create(new Orders_Items(orderId, itemId));
+		Orders_Items orders_items = orders_itemsDAO.add(new Orders_Items(orderId, itemId));
 		LOGGER.info("added items to the order");
 		return orders_items;
 	}
-
 	
+	/**
+	 * Deletes an item from an order. 
+	 */
+	public int delete(Long orderId) {
+		LOGGER.info("what is the item ID?");
+		Long itemId = utils.getLong();
+		LOGGER.info("Deleting item in the order");
+		return orders_itemsDAO.delete(new Orders_Items(orderId, itemId));
+	}
 
 }

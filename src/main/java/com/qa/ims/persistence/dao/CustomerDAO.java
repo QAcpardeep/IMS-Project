@@ -17,6 +17,14 @@ public class CustomerDAO implements Dao<Customer> {
 
 	public static final Logger LOGGER = LogManager.getLogger();
 
+	/**
+	 * Assigns all customer values attained from query and created an object of
+	 * customer
+	 * 
+	 * @param A result of the query
+	 * 
+	 * @return A new customer object
+	 */
 	@Override
 	public Customer modelFromResultSet(ResultSet resultSet) throws SQLException {
 		Long id = resultSet.getLong("id");
@@ -47,6 +55,11 @@ public class CustomerDAO implements Dao<Customer> {
 		return new ArrayList<>();
 	}
 
+	/**
+	 * Reads the latest customers from the database
+	 * 
+	 * @return A customer
+	 */
 	public Customer readLatest() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
@@ -79,6 +92,11 @@ public class CustomerDAO implements Dao<Customer> {
 		return null;
 	}
 
+	/**
+	 * Gets the specified customer
+	 * 
+	 * @param id - takes in a customer id
+	 */
 	public Customer readCustomer(Long id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
@@ -95,9 +113,9 @@ public class CustomerDAO implements Dao<Customer> {
 	/**
 	 * Updates a customer in the database
 	 * 
-	 * @param customer - takes in a customer object, the id field will be used to
-	 *                 update that customer in the database
-	 * @return
+	 * @param customer - takes in a customer object, the id field will be used to update that customer in the database
+	 * 
+	 * @return customer id
 	 */
 	@Override
 	public Customer update(Customer customer) {
