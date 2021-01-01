@@ -17,6 +17,14 @@ public class OrderDAO implements Dao<Order> {
 
 	public static final Logger LOGGER = LogManager.getLogger();
 
+	/**
+	 * Assigns all order values attained from query and created an object of
+	 * orders
+	 * 
+	 * @param resultSet - results from the query
+	 * 
+	 * @return A new order object
+	 */
 	@Override
 	public Order modelFromResultSet(ResultSet resultSet) throws SQLException {
 		Long id = resultSet.getLong("id");
@@ -26,9 +34,9 @@ public class OrderDAO implements Dao<Order> {
 	}
 	
 	/**
-	 * Reads all customers from the database
+	 * Reads all orders from the database
 	 * 
-	 * @return A list of customers
+	 * @return A list of orders
 	 */
 	@Override
 	public List<Order> readAll() {
@@ -46,7 +54,12 @@ public class OrderDAO implements Dao<Order> {
 		}
 		return new ArrayList<>();
 	}
-
+	
+	/**
+	 * Reads the latest order from the database
+	 * 
+	 * @return A order
+	 */
 	public Order readLatest() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
@@ -60,26 +73,10 @@ public class OrderDAO implements Dao<Order> {
 		return null;
 	}
 	
-	public void calculate() {
-		try (Connection connection = DBUtils.getInstance().getConnection();
-				Statement statement = connection.createStatement();){
-			Order x = readLatest();
-			statement.executeUpdate("UPDATE orders"
-					+" SET cost = (SELECT SUM(items.value) FROM items JOIN orders_items ON orders_items.item_id = items.id GROUP BY orders_items.order_id HAVING orders_items.order_id = '" 
-										+ x.getId()
-					+"') WHERE id ='" + x.getId() + "'");
-			
-		} catch (Exception e) {
-			LOGGER.debug(e);
-			LOGGER.error(e.getMessage());
-		}
-		
-	}
-	
 	/**
-	 * Creates a customer in the database
+	 * Creates a order in the database
 	 * 
-	 * @param customer - takes in a customer object. id will be ignored
+	 * @param orders - takes in a orders object. id will be ignored
 	 */
 	@Override
 	public Order create(Order orders) {
@@ -87,7 +84,26 @@ public class OrderDAO implements Dao<Order> {
 				Statement statement = connection.createStatement();) {
 			statement.executeUpdate("INSERT INTO orders(customer_id, cost) "
 										+ "VALUES('" + orders.getCustomerId() + "', '0')");
-			return readLatest();
+	
+		return readLatest();
+		} catch (Exception e) {
+			LOGGER.debug(e);
+			LOGGER.error(e.getMessage());
+		}
+		 return null;
+	}
+	
+	/**
+	 * Gets the specified order
+	 * 
+	 * @param orderId - takes in a order id
+	 */
+	public Order readOrder(Long orderId) {
+		try (Connection connection = DBUtils.getInstance().getConnection();
+				Statement statement = connection.createStatement();
+				ResultSet resultSet = statement.executeQuery("SELECT * FROM orders WHERE id = " + orderId);) {
+			resultSet.next();
+			return modelFromResultSet(resultSet);
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
@@ -96,22 +112,9 @@ public class OrderDAO implements Dao<Order> {
 	}
 	
 	/**
-	 * Updates a customer in the database
+	 * Deletes a order in the database
 	 * 
-	 * @param customer - takes in a customer object, the id field will be used to
-	 *                 update that customer in the database
-	 * @return
-	 */
-	@Override
-	public Order update(Order t) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	/**
-	 * Deletes a customer in the database
-	 * 
-	 * @param id - id of the customer
+	 * @param id - id of the order
 	 */
 	@Override
 	public int delete(long id) {
@@ -123,6 +126,26 @@ public class OrderDAO implements Dao<Order> {
 			LOGGER.error(e.getMessage());
 		}
 		return 0;
+	}
+	
+	/**
+	 * Calculates the cost of the order and updates the cost in the database for the order
+	 * 
+	 * @param order - order object 
+	 */
+	@Override
+	public Order update(Order order) {
+		try (Connection connection = DBUtils.getInstance().getConnection();
+				Statement statement = connection.createStatement();){
+				statement.executeUpdate("UPDATE orders"
+					+" SET cost = (SELECT SUM(items.value) FROM items JOIN orders_items ON orders_items.item_id = items.id GROUP BY orders_items.order_id HAVING orders_items.order_id = '" 
+										+ order.getId()
+					+"') WHERE id ='" + order.getId() + "'");
+		} catch (Exception e) {
+			LOGGER.debug(e);
+			LOGGER.error(e.getMessage());
+		}
+		return null;
 	}
 
 }

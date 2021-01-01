@@ -11,7 +11,7 @@ import com.qa.ims.persistence.domain.Order;
 import com.qa.ims.utils.Utils;
 
 /**
- * Takes in customer details for CRUD functionality
+ * Takes in order details for CRUD functionality
  *
  */
 public class OrderController implements CrudController<Order> {
@@ -43,7 +43,8 @@ public class OrderController implements CrudController<Order> {
 	}
 
 	/**
-	 * Creates an order by taking in user input
+	 * Creates an order by taking in user input: customer ID. 
+	 * Once the order created it will ask you to add items to the order, by default you have to add an item. 
 	 */
 	@Override
 	public Order create() {
@@ -51,38 +52,12 @@ public class OrderController implements CrudController<Order> {
 		Long customerId = utils.getLong();
 		Order order = orderDAO.create(new Order(customerId));
 		Long orderId = order.getId();
-		action(orderId);
-		return order;
-	}
-	
-	/**
-	 * Updates an existing order by adding or removing an item from the order. 
-	 */
-	@Override
-	public Order update() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	/**
-	 * Deletes an existing order by the id of the order
-	 * 
-	 * @return
-	 */
-	@Override
-	public int delete() {
-		LOGGER.info("Please enter the id of the order you would like to delete");
-		Long id = utils.getLong();
-		return orderDAO.delete(id);
-	}
-	
-	/**
-	 * Creates, updates and removes an item from the order. 
-	 */
-	public void action(Long orderId) {
+		orders_items.add(orderId);
+		
 		boolean exit = false;
 		do {
-			LOGGER.info("What do you want to do?");
+			
+			LOGGER.info("Do you want to add another item?");
 			LOGGER.info("ADD: add an item to the order");
 			LOGGER.info("EXIT: return to main menu");
 
@@ -91,12 +66,59 @@ public class OrderController implements CrudController<Order> {
 			switch (selector.toUpperCase()) {
 				case "ADD":
 					orders_items.add(orderId);
-					LOGGER.info("item added");
 					break;
 				case "EXIT":
 					exit = true;
 			}
 		} while (!exit);
+		
+		//Updates the cost of the order
+		return orderDAO.update(order);
+	}
+	
+	/**
+	 * Updates an existing order by adding or removing an item from the order. 
+	 */
+	@Override
+	public Order update() {
+		LOGGER.info("Please enter order ID you would like to update?");
+		Long orderId = utils.getLong();
+		boolean exit = false;
+		do {
+			LOGGER.info("What do you want to do?");
+			LOGGER.info("ADD: add an item to the order");
+			LOGGER.info("REMOVE: remove an item from the order");
+			LOGGER.info("EXIT: return to main menu");
+
+			String selector = utils.getString();
+			
+			switch (selector.toUpperCase()) {
+				case "ADD":
+					orders_items.add(orderId);
+					break;
+				case "REMOVE":
+					orders_items.delete(orderId);
+					break;
+				case "EXIT":
+					exit = true;
+			}
+		} while (!exit);
+		
+		//Updates the cost of the order
+		Order o = orderDAO.readOrder(orderId);
+		return orderDAO.update(o);
+	}
+	
+	/**
+	 * Deletes an existing order by taking user input: order id. 
+	 * 
+	 * @return
+	 */
+	@Override
+	public int delete() {
+		LOGGER.info("Please enter the id of the order you would like to delete");
+		Long id = utils.getLong();
+		return orderDAO.delete(id);
 	}
 
 }

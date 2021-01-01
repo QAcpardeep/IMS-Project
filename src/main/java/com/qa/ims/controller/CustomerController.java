@@ -39,7 +39,7 @@ public class CustomerController implements CrudController<Customer> {
 	}
 
 	/**
-	 * Creates a customer by taking in user input
+	 * Creates a customer by taking in user input: customer firstname and surname
 	 */
 	@Override
 	public Customer create() {
@@ -53,7 +53,7 @@ public class CustomerController implements CrudController<Customer> {
 	}
 
 	/**
-	 * Updates an existing customer by taking in user input
+	 * Updates an existing customer by taking in user input: id, firstname and surname
 	 */
 	@Override
 	public Customer update() {

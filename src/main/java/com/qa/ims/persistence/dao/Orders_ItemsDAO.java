@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,10 +11,16 @@ import org.apache.logging.log4j.Logger;
 import com.qa.ims.persistence.domain.Orders_Items;
 import com.qa.ims.utils.DBUtils;
 
-public class Orders_ItemsDAO implements Dao<Orders_Items>{
+public class Orders_ItemsDAO {
 	public static final Logger LOGGER = LogManager.getLogger();
-	
-	@Override
+
+	/**
+	 * Assigns all orders_items values attained from query and created an object
+	 * 
+	 * @param result - results from the query
+	 * 
+	 * @return A new orders_items object
+	 */
 	public Orders_Items modelFromResultSet(ResultSet resultSet) throws SQLException {
 		Long id = resultSet.getLong("id");
 		Long orderId = resultSet.getLong("order_id");
@@ -23,12 +28,11 @@ public class Orders_ItemsDAO implements Dao<Orders_Items>{
 		return new Orders_Items(id, orderId, itemId);
 	}
 
-	@Override
-	public List<Orders_Items> readAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
+	/**
+	 * Reads the latest item added to order from the database
+	 * 
+	 * @return orders_items object
+	 */
 	public Orders_Items readLatest() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
@@ -42,8 +46,12 @@ public class Orders_ItemsDAO implements Dao<Orders_Items>{
 		return null;
 	}
 
-	@Override
-	public Orders_Items create(Orders_Items orders_items) {
+	/**
+	 * Creates a new tuple which adds an item to an order in the database
+	 * 
+	 * @param orders_items - takes in a orders_items object. id will be ignored
+	 */
+	public Orders_Items add(Orders_Items orders_items) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();) {
 			statement.executeUpdate("INSERT INTO orders_items(order_id, item_id) VALUES('" + orders_items.getOrderId()
@@ -56,15 +64,23 @@ public class Orders_ItemsDAO implements Dao<Orders_Items>{
 		return null;
 	}
 
-	@Override
-	public Orders_Items update(Orders_Items t) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int delete(long id) {
-		// TODO Auto-generated method stub
+	/**
+	 * Removes a item from the order in the database
+	 * 
+	 * @param orders_items - takes in a orders_items object. id will be ignored
+	 */
+	public int delete(Orders_Items orders_items) {
+		try (Connection connection = DBUtils.getInstance().getConnection();
+				Statement statement = connection.createStatement();) {
+			statement.executeUpdate(
+					"DELETE FROM orders_items WHERE id IN (SELECT id FROM (SELECT id FROM orders_items WHERE order_id = '"
+							+ orders_items.getOrderId() + "' AND item_id = '" + orders_items.getItemId()
+							+ "' LIMIT 1) AS a)");
+			return 0;
+		} catch (Exception e) {
+			LOGGER.debug(e);
+			LOGGER.error(e.getMessage());
+		}
 		return 0;
 	}
 
