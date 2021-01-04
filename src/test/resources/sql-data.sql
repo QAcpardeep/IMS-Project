@@ -1,29 +1,24 @@
-INSERT INTO `customers` (`first_name`, `surname`) 
+INSERT INTO `ims`.`customers` (`first_name`, `surname`) 
 VALUES 
 ('jordan', 'harrison'),
 ('chetan', 'pardeep'),
+('prince', 'masih'),
 ('soham', 'pardeep');
 
-INSERT INTO `items` (`name`, `value`) 
+INSERT INTO `ims`.`items` (`name`, `value`) 
 VALUES 
-('clay bar', '9.99'),
-('snow foam', '39.99'),
-('tyre dressing', '15.99');
+('Koch Chemie H8.02 Heavy Cut', '12.49'), 
+('Soft99 New Fusso Coat Dark Wax', '29.95'),
+('DAS 6 V2 DUAL ACTION POLISHER', '89.95'),
+('Bilt Hamber Auto Foam 5L', '17.95'),
+('Koch Chemie H11.01 Soft Cut', '12.45');
 
-INSERT INTO `orders` (`customer_id`, `cost`) 
+INSERT INTO `ims`.`orders` (`customer_id`, `cost`) 
 VALUES 
-('1', '9.99'),
-('2', '39.99');
+('1', '0'),
+('3', '0');
 
-INSERT INTO `orders_items` (`order_id`, `item_id`) 
+INSERT INTO `ims`.`orders_items` (`order_id`, `item_id`) 
 VALUES 
 ('1', '1'),
-('1', '2'),
-('1', '3'),
-('2', '1'),
-('2', '2');
-
-SELECT SUM(items.value) FROM items JOIN orders_items ON orders_items.item_id = items.id GROUP BY orders_items.order_id HAVING orders_items.order_id = 1;
-
-
-
+('2', '1');

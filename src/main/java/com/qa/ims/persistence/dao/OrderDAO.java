@@ -83,8 +83,8 @@ public class OrderDAO implements Dao<Order> {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();) {
 			statement.executeUpdate("INSERT INTO orders(customer_id, cost) "
-										+ "VALUES('" + orders.getCustomerId() + "', '0')");
-	
+										+ "VALUES('" + orders.getCustomerId() + "', '0.0')");
+			
 		return readLatest();
 		} catch (Exception e) {
 			LOGGER.debug(e);
@@ -141,6 +141,7 @@ public class OrderDAO implements Dao<Order> {
 					+" SET cost = (SELECT SUM(items.value) FROM items JOIN orders_items ON orders_items.item_id = items.id GROUP BY orders_items.order_id HAVING orders_items.order_id = '" 
 										+ order.getId()
 					+"') WHERE id ='" + order.getId() + "'");
+				return readOrder(order.getId());
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());

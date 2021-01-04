@@ -8,9 +8,11 @@ import com.qa.ims.controller.CrudController;
 import com.qa.ims.controller.CustomerController;
 import com.qa.ims.controller.ItemController;
 import com.qa.ims.controller.OrderController;
+import com.qa.ims.controller.Orders_ItemsController;
 import com.qa.ims.persistence.dao.CustomerDAO;
 import com.qa.ims.persistence.dao.ItemDAO;
 import com.qa.ims.persistence.dao.OrderDAO;
+import com.qa.ims.persistence.dao.Orders_ItemsDAO;
 import com.qa.ims.persistence.domain.Domain;
 import com.qa.ims.utils.DBUtils;
 import com.qa.ims.utils.Utils;
@@ -22,19 +24,21 @@ public class IMS {
 	private final CustomerController customers;
 	private final ItemController items;
 	private final OrderController orders;
+	private final Orders_ItemsController orders_items;
 	private final Utils utils;
 
 	public IMS() {
 		this.utils = new Utils();
 		
 		final CustomerDAO custDAO = new CustomerDAO();
-		this.customers = new CustomerController(custDAO, utils);
-		
 		final ItemDAO itemDAO = new ItemDAO();
-		this.items = new ItemController(itemDAO, utils);
-		
+		final Orders_ItemsDAO orders_itemsDAO = new Orders_ItemsDAO();
 		final OrderDAO orderDAO = new OrderDAO();
-		this.orders = new OrderController(orderDAO, utils);
+		
+		this.customers = new CustomerController(custDAO, utils);	
+		this.items = new ItemController(itemDAO, utils);
+		this.orders_items = new Orders_ItemsController(orders_itemsDAO, utils);
+		this.orders = new OrderController(orderDAO, utils, orders_items);
 	}
 
 	public void imsSystem() {

@@ -56,6 +56,7 @@ public class Orders_ItemsDAO {
 				Statement statement = connection.createStatement();) {
 			statement.executeUpdate("INSERT INTO orders_items(order_id, item_id) VALUES('" + orders_items.getOrderId()
 					+ "','" + orders_items.getItemId() + "')");
+			LOGGER.info(readLatest());
 			return readLatest();
 		} catch (Exception e) {
 			LOGGER.debug(e);
@@ -72,11 +73,10 @@ public class Orders_ItemsDAO {
 	public int delete(Orders_Items orders_items) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();) {
-			statement.executeUpdate(
+			return statement.executeUpdate(
 					"DELETE FROM orders_items WHERE id IN (SELECT id FROM (SELECT id FROM orders_items WHERE order_id = '"
 							+ orders_items.getOrderId() + "' AND item_id = '" + orders_items.getItemId()
 							+ "' LIMIT 1) AS a)");
-			return 0;
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());

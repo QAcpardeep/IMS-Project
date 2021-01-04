@@ -6,7 +6,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.qa.ims.persistence.dao.OrderDAO;
-import com.qa.ims.persistence.dao.Orders_ItemsDAO;
 import com.qa.ims.persistence.domain.Order;
 import com.qa.ims.utils.Utils;
 
@@ -22,12 +21,11 @@ public class OrderController implements CrudController<Order> {
 	private final Orders_ItemsController orders_items;
 	private Utils utils;
 
-	public OrderController(OrderDAO orderDAO, Utils utils) {
+	public OrderController(OrderDAO orderDAO, Utils utils, Orders_ItemsController orders_items) {
 		super();
 		this.orderDAO = orderDAO;
 		this.utils = utils;
-		final Orders_ItemsDAO orders_itemsDAO = new Orders_ItemsDAO();
-		this.orders_items = new Orders_ItemsController(orders_itemsDAO, utils);
+		this.orders_items = orders_items;
 	}
 
 	/**
@@ -51,8 +49,7 @@ public class OrderController implements CrudController<Order> {
 		LOGGER.info("Please enter customer ID");
 		Long customerId = utils.getLong();
 		Order order = orderDAO.create(new Order(customerId));
-		Long orderId = order.getId();
-		orders_items.add(orderId);
+		orders_items.add(order.getId());
 		
 		boolean exit = false;
 		do {
@@ -65,7 +62,7 @@ public class OrderController implements CrudController<Order> {
 			
 			switch (selector.toUpperCase()) {
 				case "ADD":
-					orders_items.add(orderId);
+					orders_items.add(order.getId());
 					break;
 				case "EXIT":
 					exit = true;
@@ -106,7 +103,9 @@ public class OrderController implements CrudController<Order> {
 		
 		//Updates the cost of the order
 		Order o = orderDAO.readOrder(orderId);
-		return orderDAO.update(o);
+		Order y = orderDAO.update(o);
+		LOGGER.info(y);
+		return y;
 	}
 	
 	/**
