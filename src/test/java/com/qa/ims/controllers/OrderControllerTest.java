@@ -10,10 +10,10 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import static org.mockito.Mockito.any;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.qa.ims.controller.OrderController;
-import com.qa.ims.controller.Orders_ItemsController;
 import com.qa.ims.persistence.dao.OrderDAO;
 import com.qa.ims.persistence.dao.Orders_ItemsDAO;
 import com.qa.ims.persistence.domain.Order;
@@ -35,9 +35,6 @@ public class OrderControllerTest {
 	@InjectMocks
 	private OrderController controller;
 	
-	@InjectMocks
-	private Orders_ItemsController oiController;
-	
 	@Test 
 	public void testReadAll() {
 		List<Order> expected = new ArrayList<>();
@@ -55,28 +52,28 @@ public class OrderControllerTest {
 		final Order created = new Order(3L, 1L, 0.0);
 		final Orders_Items item = new Orders_Items (3L, 6L, 1L);
 		
-		Mockito.when(utils.getLong()).thenReturn(customerId);
-		Mockito.when(dao.create(created)).thenReturn(created);
+		Mockito.when(utils.getLong()).thenReturn(customerId, item.getId(), item.getId());
 		Mockito.when(utils.getString()).thenReturn("add", "exit");
-		Mockito.when(oiDAO.add(item)).thenReturn(null);
-		Mockito.when(dao.update(created)).thenReturn(created);
-
+		Mockito.when(dao.create(any(Order.class))).thenReturn(created);
+		Mockito.when(dao.update(any(Order.class))).thenReturn(created);
+		
 		assertEquals(created, controller.create());
+		
 		
 	}
 	
+
 	@Test 
 	public void testUpdate() {
-		final Long orderId = 1L;
+
 		final Order order = new Order(3L, 1L, 0.0);
-		final Orders_Items item = new Orders_Items (3L, 1L, 1L);
+		final Orders_Items item = new Orders_Items(3L, order.getId(), 1L);
 		
-		Mockito.when(utils.getLong()).thenReturn(orderId);
+		Mockito.when(utils.getLong()).thenReturn(order.getId(), item.getItemId(), item.getItemId());
 		Mockito.when(utils.getString()).thenReturn("add", "remove", "exit");
-		Mockito.when(oiController.add(orderId)).thenReturn(null);
-		Mockito.when(oiController.delete(orderId)).thenReturn(0);
-		Mockito.when(dao.readOrder(3L)).thenReturn(order);
-		Mockito.when(dao.update(order)).thenReturn(order);
+		Mockito.when(dao.readOrder(order.getId())).thenReturn(order);
+		Mockito.when(dao.update(any(Order.class))).thenReturn(order);
+		
 		assertEquals(order, controller.update());
 		
 		

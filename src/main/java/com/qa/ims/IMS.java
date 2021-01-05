@@ -8,7 +8,6 @@ import com.qa.ims.controller.CrudController;
 import com.qa.ims.controller.CustomerController;
 import com.qa.ims.controller.ItemController;
 import com.qa.ims.controller.OrderController;
-import com.qa.ims.controller.Orders_ItemsController;
 import com.qa.ims.persistence.dao.CustomerDAO;
 import com.qa.ims.persistence.dao.ItemDAO;
 import com.qa.ims.persistence.dao.OrderDAO;
@@ -24,7 +23,6 @@ public class IMS {
 	private final CustomerController customers;
 	private final ItemController items;
 	private final OrderController orders;
-	private final Orders_ItemsController orders_items;
 	private final Utils utils;
 
 	public IMS() {
@@ -37,8 +35,7 @@ public class IMS {
 		
 		this.customers = new CustomerController(custDAO, utils);	
 		this.items = new ItemController(itemDAO, utils);
-		this.orders_items = new Orders_ItemsController(orders_itemsDAO, utils);
-		this.orders = new OrderController(orderDAO, utils, orders_items);
+		this.orders = new OrderController(orderDAO, orders_itemsDAO, utils);
 	}
 
 	public void imsSystem() {

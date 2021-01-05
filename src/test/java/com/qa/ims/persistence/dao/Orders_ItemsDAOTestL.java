@@ -31,14 +31,14 @@ public class Orders_ItemsDAOTestL {
 	@Test
 	public void testAdd() {
 		final Orders_Items created = new Orders_Items(3L, 1L, 4L);
-		Orders_Items results = DAO.add(created);
+		Orders_Items results = DAO.add(created.getOrderId(), created.getItemId());
 		assertNull(results);
 	}
 	
 	@Test
 	public void testDelete() {
 		final Orders_Items created = new Orders_Items(2L, 2L, 1L);
-		assertEquals(0, DAO.delete(created));
+		assertEquals(0, DAO.delete(created.getOrderId(), created.getItemId()));
 	}
 	
 
