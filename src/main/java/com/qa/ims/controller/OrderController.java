@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.qa.ims.persistence.dao.OrderDAO;
+import com.qa.ims.persistence.dao.Orders_ItemsDAO;
 import com.qa.ims.persistence.domain.Order;
 import com.qa.ims.utils.Utils;
 
@@ -18,14 +19,14 @@ public class OrderController implements CrudController<Order> {
 	public static final Logger LOGGER = LogManager.getLogger();
 
 	private OrderDAO orderDAO;
-	private final Orders_ItemsController orders_items;
+	private Orders_ItemsDAO orders_itemsDAO;
 	private Utils utils;
 
-	public OrderController(OrderDAO orderDAO, Utils utils, Orders_ItemsController orders_items) {
+	public OrderController(OrderDAO orderDAO, Orders_ItemsDAO orders_itemsDAO, Utils utils) {
 		super();
 		this.orderDAO = orderDAO;
 		this.utils = utils;
-		this.orders_items = orders_items;
+		this.orders_itemsDAO = orders_itemsDAO;
 	}
 
 	/**
@@ -49,7 +50,10 @@ public class OrderController implements CrudController<Order> {
 		LOGGER.info("Please enter customer ID");
 		Long customerId = utils.getLong();
 		Order order = orderDAO.create(new Order(customerId));
-		orders_items.add(order.getId());
+		Long orderId = order.getId();
+		LOGGER.info("what is the item ID?");
+		Long itemID = utils.getLong();
+		orders_itemsDAO.add(orderId, itemID);
 		
 		boolean exit = false;
 		do {
@@ -62,7 +66,9 @@ public class OrderController implements CrudController<Order> {
 			
 			switch (selector.toUpperCase()) {
 				case "ADD":
-					orders_items.add(order.getId());
+					LOGGER.info("what is the item ID?");
+					Long itemId = utils.getLong();
+					orders_itemsDAO.add(orderId, itemId);
 					break;
 				case "EXIT":
 					exit = true;
@@ -70,7 +76,10 @@ public class OrderController implements CrudController<Order> {
 		} while (!exit);
 		
 		//Updates the cost of the order
-		return orderDAO.update(order);
+		Order o = orderDAO.update(order);
+		LOGGER.info(o);
+				
+		return o;
 	}
 	
 	/**
@@ -91,10 +100,16 @@ public class OrderController implements CrudController<Order> {
 			
 			switch (selector.toUpperCase()) {
 				case "ADD":
-					orders_items.add(orderId);
+					LOGGER.info("what is the item ID?");
+					Long addItemId = utils.getLong();
+					orders_itemsDAO.add(orderId, addItemId);
+					LOGGER.info("added items to the order");
 					break;
 				case "REMOVE":
-					orders_items.delete(orderId);
+					LOGGER.info("what is the item ID?");
+					Long deleteItemId = utils.getLong();
+					orders_itemsDAO.delete(orderId, deleteItemId);
+					LOGGER.info("Item deleted from the order");
 					break;
 				case "EXIT":
 					exit = true;
@@ -102,10 +117,9 @@ public class OrderController implements CrudController<Order> {
 		} while (!exit);
 		
 		//Updates the cost of the order
-		Order o = orderDAO.readOrder(orderId);
-		Order y = orderDAO.update(o);
-		LOGGER.info(y);
-		return y;
+		Order x = orderDAO.readOrder(orderId);
+		return orderDAO.update(x);
+		
 	}
 	
 	/**

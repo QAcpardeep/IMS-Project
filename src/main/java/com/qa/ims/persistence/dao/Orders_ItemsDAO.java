@@ -51,11 +51,11 @@ public class Orders_ItemsDAO {
 	 * 
 	 * @param orders_items - takes in a orders_items object. id will be ignored
 	 */
-	public Orders_Items add(Orders_Items orders_items) {
+	public Orders_Items add(Long orderID, Long itemID) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();) {
-			statement.executeUpdate("INSERT INTO orders_items(order_id, item_id) VALUES('" + orders_items.getOrderId()
-					+ "','" + orders_items.getItemId() + "')");
+			statement.executeUpdate("INSERT INTO orders_items(order_id, item_id) VALUES('" + orderID
+					+ "','" + itemID + "')");
 			LOGGER.info(readLatest());
 			return readLatest();
 		} catch (Exception e) {
@@ -70,12 +70,12 @@ public class Orders_ItemsDAO {
 	 * 
 	 * @param orders_items - takes in a orders_items object. id will be ignored
 	 */
-	public int delete(Orders_Items orders_items) {
+	public int delete(Long orderID, Long itemID) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();) {
 			return statement.executeUpdate(
 					"DELETE FROM orders_items WHERE id IN (SELECT id FROM (SELECT id FROM orders_items WHERE order_id = '"
-							+ orders_items.getOrderId() + "' AND item_id = '" + orders_items.getItemId()
+							+  orderID + "' AND item_id = '" + itemID
 							+ "' LIMIT 1) AS a)");
 		} catch (Exception e) {
 			LOGGER.debug(e);

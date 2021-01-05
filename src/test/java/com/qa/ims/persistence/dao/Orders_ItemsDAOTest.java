@@ -31,7 +31,7 @@ public class Orders_ItemsDAOTest {
 	@Test
 	public void testAdd() {
 		final Orders_Items created = new Orders_Items(3L, 1L, 4L);
-		Orders_Items results = DAO.add(created);
+		Orders_Items results = DAO.add(created.getOrderId(), created.getItemId());
 		assertEquals(created, results);
 		assertEquals(created.getId(), results.getId());
 		System.out.println(results.toString());
@@ -39,8 +39,8 @@ public class Orders_ItemsDAOTest {
 	
 	@Test
 	public void testDelete() {
-		final Orders_Items created = new Orders_Items(2L, 2L, 1L);
-		assertEquals(1, DAO.delete(created));
+		final Orders_Items created = new Orders_Items(2L, 1L);
+		assertEquals(1, DAO.delete(created.getOrderId(), created.getItemId()));
 	}
 	
 	
