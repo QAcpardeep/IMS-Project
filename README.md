@@ -1,7 +1,7 @@
-Coverage: 34%
-# Project Title
+Coverage: 82.4%
+# IMS PROJECT
 
-One Paragraph of project description goes here
+This project takes an systemized approach to inventory management where it uses database (GCP MYSQL Instance) to store customers, items and orders. The program interacts with the database through JDBC and acceses it by passing the username and password. The program interacts with user through scanner whereby it takes user input.
 
 ## Getting Started
 
