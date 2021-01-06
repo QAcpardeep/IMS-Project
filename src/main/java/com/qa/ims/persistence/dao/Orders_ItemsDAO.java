@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -44,6 +46,27 @@ public class Orders_ItemsDAO {
 			LOGGER.error(e.getMessage());
 		}
 		return null;
+	}
+	
+	/**
+	 * Reads all orders from the database
+	 * 
+	 * @return A list of orders
+	 */
+	public List<Orders_Items> readAll() {
+		try (Connection connection = DBUtils.getInstance().getConnection();
+				Statement statement = connection.createStatement();
+				ResultSet resultSet = statement.executeQuery("SELECT * FROM orders_items");) {
+			List<Orders_Items>oi = new ArrayList<>();
+			while (resultSet.next()) {
+				oi.add(modelFromResultSet(resultSet));
+			}
+			return oi;
+		} catch (SQLException e) {
+			LOGGER.debug(e);
+			LOGGER.error(e.getMessage());
+		}
+		return new ArrayList<>();
 	}
 
 	/**
