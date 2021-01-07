@@ -1,10 +1,6 @@
 package com.qa.ims.persistence.domain;
 
 public class Order {
-	@Override
-	public String toString() {
-		return "Order [id=" + id + ", customerId=" + customerId + ", cost=" + cost + "]";
-	}
 
 	// Initialising private fields
 	private Long id;
@@ -46,6 +42,11 @@ public class Order {
 
 	public void setCost(Double cost) {
 		this.cost = cost;
+	}
+	
+	@Override
+	public String toString() {
+		return "Order [id=" + id + ", customerId=" + customerId + ", cost=" + cost + "]";
 	}
 	
 	@Override
