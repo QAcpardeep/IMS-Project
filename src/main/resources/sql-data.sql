@@ -18,8 +18,8 @@ VALUES
 
 INSERT INTO `ims`.`orders` (`customer_id`, `cost`) 
 VALUES 
-('1', '0'),
-('3', '0');
+('1', '12.49'),
+('3', '12.49');
 
 INSERT INTO `ims`.`orders_items` (`order_id`, `item_id`) 
 VALUES 

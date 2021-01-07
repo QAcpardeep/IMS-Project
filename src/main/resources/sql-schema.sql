@@ -35,9 +35,6 @@ CREATE TABLE IF NOT EXISTS orders_items (
 	FOREIGN KEY (item_id) REFERENCES items(id)
 );
 
-CREATE TRIGGER update_orders
-AFTER 
-
 
 
 

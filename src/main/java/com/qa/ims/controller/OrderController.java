@@ -5,9 +5,14 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.qa.ims.persistence.dao.CustomerDAO;
+import com.qa.ims.persistence.dao.ItemDAO;
 import com.qa.ims.persistence.dao.OrderDAO;
 import com.qa.ims.persistence.dao.Orders_ItemsDAO;
+import com.qa.ims.persistence.domain.Customer;
+import com.qa.ims.persistence.domain.Item;
 import com.qa.ims.persistence.domain.Order;
+import com.qa.ims.persistence.domain.Orders_Items;
 import com.qa.ims.utils.Utils;
 
 /**
@@ -20,13 +25,17 @@ public class OrderController implements CrudController<Order> {
 
 	private OrderDAO orderDAO;
 	private Orders_ItemsDAO orders_itemsDAO;
+	private CustomerDAO customerDAO;
+	private ItemDAO itemDAO;
 	private Utils utils;
 
-	public OrderController(OrderDAO orderDAO, Orders_ItemsDAO orders_itemsDAO, Utils utils) {
+	public OrderController(OrderDAO orderDAO, Orders_ItemsDAO orders_itemsDAO, CustomerDAO customerDAO, ItemDAO itemDAO, Utils utils) {
 		super();
 		this.orderDAO = orderDAO;
-		this.utils = utils;
 		this.orders_itemsDAO = orders_itemsDAO;
+		this.customerDAO = customerDAO;
+		this.itemDAO = itemDAO;
+		this.utils = utils;
 	}
 
 	/**
@@ -35,8 +44,24 @@ public class OrderController implements CrudController<Order> {
 	@Override
 	public List<Order> readAll() {
 		List<Order> orders = orderDAO.readAll();
+		List<Customer> customers = customerDAO.readAll();
+		List<Orders_Items> ois = orders_itemsDAO.readAll();
+		List<Item> items = itemDAO.readAll();
+									 LOGGER.info(" Order ID  |   Cost   |          Name          |      Items Ordered                     ");
+									 LOGGER.info("----------------------------------------------------------------------------------------");
 		for (Order order : orders) {
-			LOGGER.info(order.toString());
+			for (Customer customer : customers) {
+				if (order.getCustomerId() == customer.getId() ) {
+									 LOGGER.info("     "+order.getId()+"         "+order.getCost()+"      "+ customer.getFirstName()+" "+customer.getSurname());
+					for (Orders_Items oi : ois) {
+						for(Item item: items){
+							if(oi.getItemId() == item.getId() && oi.getOrderId() == order.getId()) {
+									 LOGGER.info("                                                  "+item.getName() + " " + item.getValue());
+							}
+						}
+					}
+				}
+			}
 		}
 		return orders;
 	}
