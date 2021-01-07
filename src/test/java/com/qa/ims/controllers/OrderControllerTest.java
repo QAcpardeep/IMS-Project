@@ -63,15 +63,11 @@ public class OrderControllerTest {
 
 		Mockito.when(dao.readAll()).thenReturn(expected);
 		Mockito.when(customerDAO.readAll()).thenReturn(customers);
-		Mockito.when(oiDAO.readAll()).thenReturn(ois);
-		Mockito.when(itemDAO.readAll()).thenReturn(item);
 
 		assertEquals(expected, controller.readAll());
 		
 		Mockito.verify(dao, Mockito.times(1)).readAll();
 		Mockito.verify(customerDAO, Mockito.times(1)).readAll();
-		Mockito.verify(oiDAO, Mockito.times(1)).readAll();
-		Mockito.verify(itemDAO, Mockito.times(1)).readAll();
 	}
 
 	@Test

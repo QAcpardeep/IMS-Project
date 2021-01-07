@@ -2,10 +2,14 @@ package com.qa.ims.persistence.dao;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.qa.ims.persistence.domain.Item;
 import com.qa.ims.persistence.domain.Orders_Items;
 import com.qa.ims.utils.DBUtils;
 
@@ -26,6 +30,12 @@ public class Orders_ItemsDAOTestL {
 	@Test
 	public void testReadLatest() {
 		assertNull(DAO.readLatest());
+	}
+	
+	@Test
+	public void testReadAll() {
+		List<Item> expected = new ArrayList<>();
+		assertEquals(expected, DAO.readAll());
 	}
 
 	@Test
