@@ -40,8 +40,8 @@ public class OrderController implements CrudController<Order> {
 	public List<Order> readAll() {
 		List<Order> orders = orderDAO.readAll();
 		List<Customer> customers = customerDAO.readAll();
-									 LOGGER.info(" Order ID  |   Cost   |          Name          |      Items Ordered                     ");
-									 LOGGER.info("----------------------------------------------------------------------------------------");
+									 LOGGER.info(" Order ID  |   Cost   |          Name          ");
+									 LOGGER.info("------------------------------------------------");
 		for (Order order : orders) {
 			for (Customer customer : customers) {
 				if (order.getCustomerId() == customer.getId() ) {
