@@ -5,7 +5,7 @@ This project takes an systemized approach to inventory management where it uses 
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+- JIRA Board Link - https://team-1606236407721.atlassian.net/jira/software/projects/IMS/boards/5
 
 ### Prerequisites
 
